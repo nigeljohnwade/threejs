@@ -24,6 +24,8 @@ const customMaterial = new THREE.ShaderMaterial({
 console.log(customMaterial);
 const cube1 = new THREE.Mesh(geometry, basicMaterial);
 const cube2 = new THREE.Mesh(geometry, customMaterial);
+cube1.position.x = 1;
+cube2.position.x = -1;
 scene.add( cube1 );
 scene.add( cube2 );
 
