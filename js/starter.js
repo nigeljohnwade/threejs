@@ -31,13 +31,20 @@ scene.add( cube2 );
 
 camera.position.z = 5;
 
-function animate() {
-    requestAnimationFrame( animate );
-    cube1.rotation.x += 0.01;
-    cube2.rotation.x -= 0.01;
-    cube1.rotation.y += 0.01;
-    cube2.rotation.y -= 0.01;
+function animate(t) {
+    const tDivisor = 1000;
+
+    cube1.rotation.x = t/tDivisor;
+    cube2.rotation.x = t/tDivisor;
+    cube1.rotation.y = t/tDivisor;
+    cube2.rotation.y = t/tDivisor;
+    cube1.position.x = Math.sin(t/tDivisor);
+    cube2.position.x = -Math.sin(t/tDivisor);
+    cube1.position.y = Math.cos(t/tDivisor);
+    cube2.position.y = -Math.cos(t/tDivisor);
     renderer.render( scene, camera );
+
+    requestAnimationFrame( animate );
 }
 if ( WEBGL.isWebGLAvailable() ) {
     animate();
