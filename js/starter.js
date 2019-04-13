@@ -19,4 +19,10 @@ function animate() {
     cube.rotation.y += 0.01;
     renderer.render( scene, camera );
 }
-animate();
+
+if ( WEBGL.isWebGLAvailable() ) {
+    animate();
+} else {
+    const warning = WEBGL.getWebGLErrorMessage();
+    document.getElementById( 'container' ).appendChild( warning );
+}
