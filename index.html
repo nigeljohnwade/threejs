@@ -6,13 +6,15 @@
     <style>
         body { margin: 0; background-color: black}
         canvas { display: block; width: 100%; height: 100% }
+        .credits{position: absolute; color: white}
     </style>
 </head>
 <body>
-
+<p class="credits"></p>
 <!-- Library imports -->
 <script src="js/three.js"></script>
 <script src="js/WebGL.js"></script>
+<script src="js/GLTFLoader.js"></script>
 
 <!-- Shaders -->
 <script id="vs" type="x-shader/x-vertex">
