@@ -15,42 +15,58 @@ if ( WEBGL.isWebGL2Available() === false ) {
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+// Geometries
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+
+// Materials
 const basicGreenMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
 const basicRedMaterial = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-const lambertGreenMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00, transparent :true, opacity: 0.5});
-const lambertRedMaterial = new THREE.MeshLambertMaterial({color: 0xff0000, transparent :true, opacity: 0.5});
+const lambertGreenMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00, transparent :true, opacity: 1});
+const lambertRedMaterial = new THREE.MeshLambertMaterial({color: 0xff0000, transparent :true, opacity: 1});
 const phongGreenMaterial = new THREE.MeshPhongMaterial({color: 0x88ff00, emissive: 0x008800, specular: 0xffffff, shininess: 300});
 const phongRedMaterial = new THREE.MeshPhongMaterial({color: 0xff8800, emissive: 0x880000, specular: 0xffffff, shininess: 300});
-// const customMaterial = new THREE.ShaderMaterial({
-//     vertexShader: document.getElementById('vs').textContent.trim(),
-//     fragmentShader: document.getElementById('fs').textContent.trim()
-// });
-const lambertGreenCube = new THREE.Mesh(geometry, lambertGreenMaterial);
-const lambertRedCube = new THREE.Mesh(geometry, lambertRedMaterial);
+const customGLMaterial = new THREE.ShaderMaterial({
+    vertexShader: document.getElementById('vs').textContent.trim(),
+    fragmentShader: document.getElementById('fs').textContent.trim()
+});
+
+// Objects
+const lambertGreenCube = new THREE.Mesh(boxGeometry, lambertGreenMaterial);
+const lambertRedCube = new THREE.Mesh(boxGeometry, lambertRedMaterial);
 lambertGreenCube.position.x = 1;
 lambertRedCube.position.x = -1;
 scene.add( lambertGreenCube );
 scene.add( lambertRedCube );
 
-const phongGreenCube = new THREE.Mesh(geometry, phongGreenMaterial);
-const phongRedCube = new THREE.Mesh(geometry, phongRedMaterial);
+const phongGreenCube = new THREE.Mesh(boxGeometry, phongGreenMaterial);
+const phongRedCube = new THREE.Mesh(boxGeometry, phongRedMaterial);
 phongGreenCube.position.x = 0.5;
 phongRedCube.position.x = -0.5;
 scene.add( phongGreenCube );
 scene.add( phongRedCube );
 
-const basicGreenCube = new THREE.Mesh(geometry, basicGreenMaterial);
-const basicRedCube = new THREE.Mesh(geometry, basicRedMaterial);
+const basicGreenCube = new THREE.Mesh(boxGeometry, basicGreenMaterial);
+const basicRedCube = new THREE.Mesh(boxGeometry, basicRedMaterial);
 basicGreenCube.position.x = 0.75;
 basicRedCube.position.x = -0.75;
 scene.add( basicGreenCube );
 scene.add( basicRedCube );
 
-const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set( 5, 5, 5 );
-scene.add( light );
+const customBlueSphere = new THREE.Mesh(sphereGeometry, customGLMaterial);
+// scene.add( customBlueSphere );
 
+// Lights
+const softAmbientLight = new THREE.AmbientLight(0x030303);
+scene.add(softAmbientLight);
+const directionalSunLight = new THREE.DirectionalLight(0xffffff, 0.5);
+scene.add(directionalSunLight);
+const originPointLight = new THREE.PointLight(0xffffff, 1, 20);
+originPointLight.position.set( 0, 0, 0);
+scene.add( originPointLight );
+const rotatingPointLight = new THREE.PointLight(0xffff00, 0.6, 200);
+rotatingPointLight.position.set( 0, 0, 0);
+scene.add( rotatingPointLight );
 camera.position.z = 5;
 
 function animate(t) {
@@ -101,9 +117,16 @@ function animate(t) {
     basicRedCube.position.y = -Math.cos(t/tDivisor/2) * 2;
     basicGreenCube.position.z = -Math.cos(t/tDivisor/2) * 2;
     basicRedCube.position.z = -Math.cos(t/tDivisor/2) * 2;
-    
+
+    customBlueSphere.scale.x = Math.sin(t/tDivisor/4);
+    customBlueSphere.scale.y = Math.sin(t/tDivisor/4);
+    customBlueSphere.scale.z = Math.sin(t/tDivisor/4);
     renderer.render( scene, camera );
 
+    originPointLight.intensity = Math.sin(t/tDivisor/0.2);
+    rotatingPointLight.position.x = Math.sin(t/tDivisor/5) * 5;
+    rotatingPointLight.position.y = Math.cos(t/tDivisor/5) * 5;
+    rotatingPointLight.position.z = Math.sin(t/tDivisor/5) * 5;
     requestAnimationFrame( animate );
 }
 if ( WEBGL.isWebGLAvailable() ) {
