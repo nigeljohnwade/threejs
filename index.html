@@ -17,30 +17,6 @@
 <script src="js/WebGL.js"></script>
 <script src="js/GLTFLoader.js"></script>
 
-<!-- Shaders -->
-<script id="vs" type="x-shader/x-vertex">
-#version 300 es
-
-void main() {
-
-	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 0.5 );
-
-}
-</script>
-<script id="fs" type="x-shader/x-fragment">
-#version 300 es
-
-precision highp float;
-precision highp int;
-out vec4 out_FragColor;
-
-void main() {
-
-	out_FragColor = vec4( 0, 0, 1, 1 );
-
-}
-</script>
-
 <!-- Application -->
 <script src="js/starter.js"></script>
 </body>
