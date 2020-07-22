@@ -183,7 +183,8 @@ function animate(t) {
 }
 
 if (WEBGL.isWebGLAvailable()) {
-    animate();
+    renderer.setAnimationLoop(animate);
+    // animate();
 } else {
     const warning = WEBGL.getWebGLErrorMessage();
     document.getElementById('container').appendChild(warning);
